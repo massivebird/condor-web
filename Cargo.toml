@@ -1,0 +1,13 @@
+[package]
+name = "axum-test"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+askama = "0.12.1"
+axum = "0.8.1"
+regex = "1.11.1"
+reqwest = { version = "0.12.12", features = ["blocking"] }
+serde = "1.0.217"
+tokio = { version = "1.43.0", features = ["macros", "rt-multi-thread"] }
+tracing-subscriber = "0.3.19"
