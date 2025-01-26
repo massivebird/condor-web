@@ -11,3 +11,4 @@ reqwest = { version = "0.12.12", features = ["blocking"] }
 serde = "1.0.217"
 tokio = { version = "1.43.0", features = ["macros", "rt-multi-thread"] }
 tracing-subscriber = "0.3.19"
+condor = { path = "../condor" }
