@@ -443,6 +443,7 @@ dependencies = [
 [[package]]
 name = "condor"
 version = "0.1.0"
+source = "git+https://github.com/massivebird/condor#12e3f193aa1c54ad25a7b8819319ce1404757976"
 dependencies = [
  "chrono",
  "clap",
