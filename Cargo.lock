@@ -230,20 +230,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "axum-test"
-version = "0.1.0"
-dependencies = [
- "askama",
- "axum",
- "condor",
- "regex",
- "reqwest",
- "serde",
- "tokio",
- "tracing-subscriber",
-]
-
-[[package]]
 name = "backtrace"
 version = "0.3.71"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -470,6 +456,20 @@ dependencies = [
  "simplelog",
  "time",
  "tokio",
+]
+
+[[package]]
+name = "condor-web"
+version = "0.1.0"
+dependencies = [
+ "askama",
+ "axum",
+ "condor",
+ "regex",
+ "reqwest",
+ "serde",
+ "tokio",
+ "tracing-subscriber",
 ]
 
 [[package]]
