@@ -1,7 +1,7 @@
 use askama::Template;
-use axum::{http::status::StatusCode, response::Html, routing::get, Router};
+use axum::{extract::Query, http::status::StatusCode, response::Html, routing::get, Router};
 use condor::CourseStatus;
-use std::fs::read_to_string;
+use std::{collections::HashMap, fs::read_to_string};
 
 #[tokio::main]
 async fn main() {
@@ -10,7 +10,8 @@ async fn main() {
             "/",
             get(|| async { Html(read_to_string("index.html").unwrap()) }),
         )
-        .route("/condor", get(condor))
+        .route("/condor", get(get_course))
+        .route("/api/get_course", get(get_course))
         .route("/api/sneeze", get(|| async { "achoo" }))
         .route("/form", get(show_form).post(|| async { "duh" }));
 
@@ -20,9 +21,13 @@ async fn main() {
     axum::serve(listener, app).await.unwrap();
 }
 
-async fn condor() -> String {
-    let course_status: CourseStatus = condor::get_course_status("22418", "202520").await.unwrap();
-    course_status.as_json().unwrap()
+async fn get_course(Query(params): Query<HashMap<String, String>>) -> Result<String, ()> {
+    let crn = params.get("crn").ok_or(())?;
+    let semester_code = params.get("semester_code").ok_or(())?;
+
+    let course_status: CourseStatus = condor::get_course_status(crn, semester_code).await.unwrap();
+
+    Ok(course_status.as_json().unwrap())
 }
 
 #[derive(Template)]

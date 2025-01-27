@@ -17,7 +17,7 @@
 </body>
 
 <script type="module">
-  const response = await fetch("/condor");
+  const response = await fetch("/api/get_course?crn=22418&semester_code=202520");
   const json = await response.text();
   const obj = JSON.parse(json);
 
