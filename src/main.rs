@@ -11,7 +11,6 @@ async fn main() {
             get(|| async { Html(read_to_string("index.html").unwrap()) }),
         )
         .route("/condor", get(condor))
-        .route("/hello", get(hello))
         .route("/api/sneeze", get(|| async { "achoo" }))
         .route("/form", get(show_form).post(|| async { "duh" }));
 
@@ -21,9 +20,9 @@ async fn main() {
     axum::serve(listener, app).await.unwrap();
 }
 
-async fn condor() -> Html<String> {
-    let course_status: CourseStatus = condor::get_course_status("22222", "202520").await.unwrap();
-    Html(format!("{course_status:?}"))
+async fn condor() -> String {
+    let course_status: CourseStatus = condor::get_course_status("22418", "202520").await.unwrap();
+    course_status.as_json().unwrap()
 }
 
 #[derive(Template)]
