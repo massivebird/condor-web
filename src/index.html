@@ -145,9 +145,15 @@
       let pill = document.createElement("div");
       pill.className = "coursePill"
 
-      pill.innerHTML = `<p><b>${obj["code"]}: ${obj["title"]}</b></p>
+      let header = `<p><b>${obj["code"]}: ${obj["title"]}</b></p>`
+
+      pill.innerHTML = `${header}
 <p>Capacity: ${obj["actual_capacity"]}<br>
 Remaining seats: ${obj["actual_remaining"]}</p>`;
+
+      pill.addEventListener("mouseenter", function () {
+         console.log("HOVERING");
+      })
 
       pill.addEventListener("click", function () {
          console.log(`Removing CRN ${crn}.`)
