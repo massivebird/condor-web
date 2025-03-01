@@ -12,41 +12,79 @@
       font-family: Arial, Helvetica, sans-serif;
    }
 
+   h1,
+   label {
+      color: #eeeeee;
+   }
+
+   #container {
+      margin: 10px;
+   }
+
+   .floating {
+      width: fit-content;
+      height: fit-content;
+      background-color: #0e0e0e;
+      border: 1px solid #1e1e1e;
+      padding: 7px;
+      border-radius: 6px;
+      margin: 20px 0;
+   }
+
+   /* https://heropatterns.com */
+   body {
+      background-color: #0e0e0e;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%231e1e1e' fill-opacity='0.4'%3E%3Cpath opacity='.5' d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9z'/%3E%3Cpath d='M6 5V0H5v5H0v1h5v94h1V6h94V5H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+   }
+
    .course {
-      width: 500px;
-      height: auto;
+      width: fit-content;
+      height: fit-content;
       color: white;
-      background-color: #005599;
-      border: 2px solid black;
+      background-color: #006a34;
+      border: 2px solid #1e1e1e;
       margin-top: 10px;
-      padding: 5px 20px;
-      border-radius: 100px;
+      border-radius: 5px;
+      overflow: hidden;
+   }
+
+   .course p {
+      margin: 0;
+      padding: 0 30px 0 7px;
+   }
+
+   .course p:not(:first-child) {
+      background-color: #eeeeee;
+      color: black;
    }
 </style>
 
 <body>
-   <h1><code>condor-web</code></h1>
+   <div id="container">
+      <h1 class="floating"><code>condor-web</code></h1>
 
-   <label for="season-input">Season</label>
-   <select id="season-input" name="season">
-      <option value="winter">Winter</option>
-      <option value="fall">Fall</option>
-   </select>
+      <div id="input-container" class="floating">
+         <label for="season-input">Season</label>
+         <select id="season-input" name="season">
+            <option value="winter">Winter</option>
+            <option value="fall">Fall</option>
+         </select>
 
-   <label for="year-input">Year</label>
-   <input id="year-input" type="text" placeholder="2025" value="2025" size="4" />
-   </select>
+         <label for="year-input">Year</label>
+         <input id="year-input" type="text" placeholder="2025" value="2025" size="4" />
 
-   <br><br>
+         <br><br>
 
-   <label for="crn-input">CRN</label>
-   <input id="crn-input" type="text" placeholder="22418" />
+         <label for="crn-input">CRN</label>
+         <input id="crn-input" type="text" placeholder="22418" size="5" />
 
-   <br><br>
+         <br><br>
 
-   <button id="add-class-btn">Add class</button>
+         <button id="add-class-btn">Add class</button>
+      </div>
 
-   <div id="courses"></div>
+      <div id="courses"></div>
+   </div>
 </body>
 
 <script type="module">
@@ -60,9 +98,9 @@
       let course = document.createElement("div");
       course.className = "course"
 
-      course.innerHTML = `<b>${obj["code"]}: ${obj["title"]}</b><br>
-Capacity: ${obj["actual_capacity"]}<br>
-Remaining seats: ${obj["actual_remaining"]}`;
+      course.innerHTML = `<p><b>${obj["code"]}: ${obj["title"]}</b></p>
+<p>Capacity: ${obj["actual_capacity"]}<br>
+Remaining seats: ${obj["actual_remaining"]}</p>`;
 
       document.getElementById("courses").appendChild(course);
 
