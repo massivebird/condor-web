@@ -33,6 +33,8 @@
 </body>
 
 <script type="module">
+   let crns = [];
+
    async function addPill(crn) {
       const response = await fetch(`/api/get_course?crn=${crn}&semester_code=202520`);
       const json = await response.text();
@@ -56,6 +58,12 @@ Capacity/remaining: ${obj["actual_capacity"]}/${obj["actual_remaining"]}`;
       // Clear input box.
       inputBox.value = "";
 
+      if (crns.includes(crn)) {
+         console.log(`Duplicate CRN: ${crn}`);
+         return;
+      }
+
+      crns.push(crn);
       await addPill(crn)
    })
 </script>
