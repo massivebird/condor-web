@@ -27,8 +27,19 @@
 <body>
    <h1><code>condor-web</code></h1>
 
+   <label for="season-input">Season</label>
+   <select id="season-input" name="season">
+      <option value="winter">Winter</option>
+      <option value="fall">Fall</option>
+   </select>
+
+   <br><br>
+
    <label for="crn-input">CRN</label>
    <input id="crn-input" type="text" placeholder="22418" />
+
+   <br><br>
+
    <button id="add-class-btn">Add class</button>
 
    <div id="courses"></div>
@@ -37,8 +48,8 @@
 <script type="module">
    let crns = [];
 
-   async function addPill(crn) {
-      const response = await fetch(`/api/get_course?crn=${crn}&semester_code=202520`);
+   async function addPill(crn, season) {
+      const response = await fetch(`/api/get_course?crn=${crn}&year=2025&season=${season}`);
       const json = await response.text();
       const obj = JSON.parse(json);
 
@@ -71,10 +82,12 @@ Remaining seats: ${obj["actual_remaining"]}`;
          return;
       }
 
-      console.log(`Adding CRN: ${crn}`);
+      const season = document.getElementById("season-input").value
+
+      console.log(`Adding CRN: ${crn} for ${season}`);
 
       crns.push(crn);
-      await addPill(crn)
+      await addPill(crn, season)
    })
 </script>
 

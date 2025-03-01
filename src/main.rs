@@ -28,9 +28,18 @@ async fn main() {
 
 async fn get_course(Query(params): Query<HashMap<String, String>>) -> Result<String, ()> {
     let crn = params.get("crn").ok_or(())?;
-    let semester_code = params.get("semester_code").ok_or(())?;
+    let year = params.get("year").ok_or(())?;
+    let season = params.get("season").ok_or(())?;
 
-    let course_status: CourseStatus = condor::get_course_status(crn, semester_code).await.unwrap();
+    let semester_code = match season.as_str() {
+        "winter" => format!("{year}20"),
+        "fall" => format!("{}10", year.parse::<u32>().unwrap() + 1),
+        _ => panic!("Unknown season: {season}"),
+    };
+
+    let course_status: CourseStatus = condor::get_course_status(crn, &semester_code)
+        .await
+        .unwrap();
 
     Ok(course_status.as_json().unwrap())
 }
