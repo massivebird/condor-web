@@ -149,6 +149,17 @@
 <p>Capacity: ${obj["actual_capacity"]}<br>
 Remaining seats: ${obj["actual_remaining"]}</p>`;
 
+      pill.addEventListener("click", function () {
+         console.log(`Removing CRN ${crn}.`)
+
+         const idx = crns.indexOf(crn);
+         if (idx > -1) {
+            crns.splice(idx, 1);
+         }
+
+         pill.remove();
+      });
+
       document.getElementById("courses").appendChild(pill);
 
       document.getElementById("add-class-btn").disabled = false;
