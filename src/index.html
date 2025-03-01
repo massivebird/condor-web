@@ -78,7 +78,7 @@
       vertical-align: middle;
    }
 
-   .course {
+   .coursePill {
       width: fit-content;
       height: fit-content;
       color: white;
@@ -89,12 +89,12 @@
       overflow: hidden;
    }
 
-   .course p {
+   .coursePill p {
       margin: 0;
       padding: 0 30px 0 7px;
    }
 
-   .course p:not(:first-child) {
+   .coursePill p:not(:first-child) {
       background-color: #eeeeee;
       color: black;
    }
@@ -142,14 +142,14 @@
       const json = await response.text();
       const obj = JSON.parse(json);
 
-      let course = document.createElement("div");
-      course.className = "course"
+      let pill = document.createElement("div");
+      pill.className = "coursePill"
 
-      course.innerHTML = `<p><b>${obj["code"]}: ${obj["title"]}</b></p>
+      pill.innerHTML = `<p><b>${obj["code"]}: ${obj["title"]}</b></p>
 <p>Capacity: ${obj["actual_capacity"]}<br>
 Remaining seats: ${obj["actual_remaining"]}</p>`;
 
-      document.getElementById("courses").appendChild(course);
+      document.getElementById("courses").appendChild(pill);
 
       document.getElementById("add-class-btn").disabled = false;
       document.getElementById("loader").style.display = "none";
