@@ -79,7 +79,7 @@
    }
 
    .coursePill {
-      width: fit-content;
+      width: 420px;
       height: fit-content;
       color: white;
       background-color: #006a34;
@@ -91,12 +91,22 @@
 
    .coursePill p {
       margin: 0;
-      padding: 0 30px 0 7px;
+      padding: 0 7px;
    }
 
    .coursePill p:not(:first-child) {
       background-color: #eeeeee;
       color: black;
+   }
+
+   .deleteCourseIcon {
+      float: right;
+      display: none;
+      color: #fd4646;
+   }
+
+   .deleteCourseIcon:hover {
+      cursor: pointer;
    }
 </style>
 
@@ -145,18 +155,26 @@
       let pill = document.createElement("div");
       pill.className = "coursePill"
 
-      let header = `<p><b>${obj["code"]}: ${obj["title"]}</b></p>`
+      const delId = `del${crn}`
+      let delIcon = `<span class="deleteCourseIcon" id="${delId}" title="Remove course"><b>—</b></span>`
+      let header = `<p style="text-align: left"><b>${obj["code"]}: ${obj["title"]}</b>${delIcon}</p>`
 
       pill.innerHTML = `${header}
 <p>Capacity: ${obj["actual_capacity"]}<br>
 Remaining seats: ${obj["actual_remaining"]}</p>`;
 
       pill.addEventListener("mouseenter", function () {
-         console.log("HOVERING");
+         document.getElementById(delId).style.display = "inline-block";
       })
 
-      pill.addEventListener("click", function () {
-         console.log(`Removing CRN ${crn}.`)
+      pill.addEventListener("mouseleave", function () {
+         document.getElementById(delId).style.display = "none";
+      })
+
+      document.getElementById("courses").appendChild(pill);
+
+      document.getElementById(delId).addEventListener("click", function () {
+         console.log(`Removing CRN ${crn}.`);
 
          const idx = crns.indexOf(crn);
          if (idx > -1) {
@@ -165,8 +183,6 @@ Remaining seats: ${obj["actual_remaining"]}</p>`;
 
          pill.remove();
       });
-
-      document.getElementById("courses").appendChild(pill);
 
       document.getElementById("add-class-btn").disabled = false;
       document.getElementById("loader").style.display = "none";
