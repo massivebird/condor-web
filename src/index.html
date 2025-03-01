@@ -15,7 +15,9 @@
    .course {
       width: 500px;
       height: auto;
-      background-color: #ff99bb;
+      color: white;
+      background-color: #005599;
+      border: 2px solid black;
       margin-top: 10px;
       padding: 5px 20px;
       border-radius: 100px;
@@ -43,8 +45,9 @@
       let course = document.createElement("div");
       course.className = "course"
 
-      course.innerText = `${obj["code"]} : ${obj["title"]}
-Capacity/remaining: ${obj["actual_capacity"]}/${obj["actual_remaining"]}`;
+      course.innerHTML = `<b>${obj["code"]}: ${obj["title"]}</b><br>
+Capacity: ${obj["actual_capacity"]}<br>
+Remaining seats: ${obj["actual_remaining"]}`;
 
       document.getElementById("courses").appendChild(course);
 
