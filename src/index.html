@@ -16,6 +16,7 @@
       width: 500px;
       height: auto;
       background-color: #ff99bb;
+      margin-top: 10px;
       padding: 5px 20px;
       border-radius: 100px;
    }
@@ -23,22 +24,40 @@
 
 <body>
    <h1><code>condor-web</code></h1>
+
+   <label for="crn-input">CRN</label>
+   <input id="crn-input" type="text" placeholder="22418" />
+   <button id="add-class-btn">Add class</button>
+
    <div id="courses"></div>
 </body>
 
 <script type="module">
-   const crn = "22418"
-   const response = await fetch(`/api/get_course?crn=${crn}&semester_code=202520`);
-   const json = await response.text();
-   const obj = JSON.parse(json);
+   async function addPill(crn) {
+      const response = await fetch(`/api/get_course?crn=${crn}&semester_code=202520`);
+      const json = await response.text();
+      const obj = JSON.parse(json);
 
-   let course = document.createElement("div");
-   course.className = "course"
+      let course = document.createElement("div");
+      course.className = "course"
 
-   course.innerText = `${obj["code"]} : ${obj["title"]}
+      course.innerText = `${obj["code"]} : ${obj["title"]}
 Capacity/remaining: ${obj["actual_capacity"]}/${obj["actual_remaining"]}`;
 
-   document.getElementById("courses").appendChild(course);
+      document.getElementById("courses").appendChild(course);
+
+   }
+
+   document.getElementById("add-class-btn").addEventListener("click", async function () {
+      let inputBox = document.getElementById("crn-input");
+
+      const crn = inputBox.value;
+
+      // Clear input box.
+      inputBox.value = "";
+
+      await addPill(crn)
+   })
 </script>
 
 </html>
