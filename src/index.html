@@ -2,33 +2,55 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>condor-web</title>
-  <link href="css/style.css" rel="stylesheet">
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <title>condor-web</title>
 </head>
 
+<style>
+* {
+   font-family: Arial, Helvetica, sans-serif;
+}
+
+.course {
+   width: 500px;
+   height: auto;
+   background-color: #ff99bb;
+   padding: 5px;
+}
+</style>
+
 <body>
-  <h1><code>condor-web</code></h1>
-  <p>Title: <span id="title">...</span></p>
-  <p>Code: <span id="code">...</span></p>
-  <p># students enrolled: <span id="actual_students">...</span></p>
-  <p>Remaining actual seats: <span id="actual_remaining">...</span></p>
+   <h1><code>condor-web</code></h1>
+   <p>Title: <span id="title">...</span></p>
+   <p>Code: <span id="code">...</span></p>
+   <p># students enrolled: <span id="actual_students">...</span></p>
+   <p>Remaining actual seats: <span id="actual_remaining">...</span></p>
+   <div id="courses"></div>
 </body>
 
 <script type="module">
-  const response = await fetch("/api/get_course?crn=22418&semester_code=202520");
-  const json = await response.text();
-  const obj = JSON.parse(json);
+   const crn = "22418"
+   const response = await fetch(`/api/get_course?crn=${crn}&semester_code=202520`);
+   const json = await response.text();
+   const obj = JSON.parse(json);
 
-  function display(id) {
-    document.getElementById(id).innerText = obj[id];
-  }
+   function display(id) {
+      document.getElementById(id).innerText = obj[id];
+   }
 
-  display("title");
-  display("code");
-  display("actual_remaining");
-  display("actual_students");
+   display("title");
+   display("code");
+   display("actual_remaining");
+   display("actual_students");
+
+   let course = document.createElement("div");
+   course.className = "course"
+
+   course.innerText = `${obj["code"]} : ${obj["title"]}
+Capacity/remaining: ${obj["actual_capacity"]}/${obj["actual_remaining"]}`;
+
+   document.getElementById("courses").appendChild(course);
 </script>
 
 </html>
