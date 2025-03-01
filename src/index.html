@@ -59,9 +59,16 @@ Capacity/remaining: ${obj["actual_capacity"]}/${obj["actual_remaining"]}`;
       inputBox.value = "";
 
       if (crns.includes(crn)) {
-         console.log(`Duplicate CRN: ${crn}`);
+         console.log(`Duplicate CRN: ${crn}. Returning.`);
          return;
       }
+
+      if (crn.match(/^\s*$/)) {
+         console.log("CRN all whitespace. Returning.");
+         return;
+      }
+
+      console.log(`Adding CRN: ${crn}`);
 
       crns.push(crn);
       await addPill(crn)
