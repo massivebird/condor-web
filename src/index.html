@@ -8,24 +8,21 @@
 </head>
 
 <style>
-* {
-   font-family: Arial, Helvetica, sans-serif;
-}
+   * {
+      font-family: Arial, Helvetica, sans-serif;
+   }
 
-.course {
-   width: 500px;
-   height: auto;
-   background-color: #ff99bb;
-   padding: 5px;
-}
+   .course {
+      width: 500px;
+      height: auto;
+      background-color: #ff99bb;
+      padding: 5px 20px;
+      border-radius: 100px;
+   }
 </style>
 
 <body>
    <h1><code>condor-web</code></h1>
-   <p>Title: <span id="title">...</span></p>
-   <p>Code: <span id="code">...</span></p>
-   <p># students enrolled: <span id="actual_students">...</span></p>
-   <p>Remaining actual seats: <span id="actual_remaining">...</span></p>
    <div id="courses"></div>
 </body>
 
@@ -34,15 +31,6 @@
    const response = await fetch(`/api/get_course?crn=${crn}&semester_code=202520`);
    const json = await response.text();
    const obj = JSON.parse(json);
-
-   function display(id) {
-      document.getElementById(id).innerText = obj[id];
-   }
-
-   display("title");
-   display("code");
-   display("actual_remaining");
-   display("actual_students");
 
    let course = document.createElement("div");
    course.className = "course"
