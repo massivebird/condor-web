@@ -33,6 +33,10 @@
       <option value="fall">Fall</option>
    </select>
 
+   <label for="year-input">Year</label>
+   <input id="year-input" type="text" placeholder="2025" value="2025" size="4" />
+   </select>
+
    <br><br>
 
    <label for="crn-input">CRN</label>
@@ -48,8 +52,8 @@
 <script type="module">
    let crns = [];
 
-   async function addPill(crn, season) {
-      const response = await fetch(`/api/get_course?crn=${crn}&year=2025&season=${season}`);
+   async function addPill(crn, season, year) {
+      const response = await fetch(`/api/get_course?crn=${crn}&year=${year}&season=${season}`);
       const json = await response.text();
       const obj = JSON.parse(json);
 
@@ -84,10 +88,12 @@ Remaining seats: ${obj["actual_remaining"]}`;
 
       const season = document.getElementById("season-input").value
 
-      console.log(`Adding CRN: ${crn} for ${season}`);
+      const year = document.getElementById("year-input").value
+
+      console.log(`Adding CRN: ${crn} for ${season} ${year}`);
 
       crns.push(crn);
-      await addPill(crn, season)
+      await addPill(crn, season, year)
    })
 </script>
 
