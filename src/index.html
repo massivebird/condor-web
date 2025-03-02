@@ -70,7 +70,7 @@
       }
    }
 
-   #add-class-btn {
+   #add-course-btn {
       display: inline-block;
    }
 
@@ -132,7 +132,7 @@
          <br><br>
 
          <div id="btn-loader">
-            <button id="add-class-btn">Add class</button>
+            <button id="add-course-btn">Add class</button>
             <div id="loader"></div>
          </div>
       </div>
@@ -147,23 +147,41 @@
    document.getElementById("year-input").setCustomValidity("Invalid year.");
    document.getElementById("year-input").reportValidity();
 
+   async function updatePill(crn, season, year) {
+      console.log(`Updating CRN ${crn}.`);
+
+      const response = await fetch(`/api/get_course?crn=${crn}&year=${year}&season=${season}`);
+      const json = await response.text();
+      const obj = JSON.parse(json);
+
+      let data = document.getElementById(`data${crn}`);
+      data.innerHTML = `Capacity: ${obj["actual_capacity"]}<br>
+Remaining seats: ${obj["actual_remaining"]}`;
+   }
+
    async function addPill(crn, season, year) {
-      document.getElementById("add-class-btn").disabled = true;
+      // Update input elements.
+      document.getElementById("add-course-btn").disabled = true;
       document.getElementById("loader").style.display = "inline-block";
 
       const response = await fetch(`/api/get_course?crn=${crn}&year=${year}&season=${season}`);
       const json = await response.text();
       const obj = JSON.parse(json);
 
+      // Aggregated course data appears to the user in a "pill" element.
       let pill = document.createElement("div");
+      pill.id = `pill${crn}`
       pill.className = "coursePill"
 
+      // Create a unique ID so I can bind an event listener to this delete button.
       const delId = `del${crn}`
       let delIcon = `<span class="deleteCourseIcon" id="${delId}" title="Remove course"><b>—</b></span>`
+
+      // "COSC 519: Hyper-Extended Stevens Sliding"
       let header = `<p style="text-align: left"><b>${obj["code"]}: ${obj["title"]}</b>${delIcon}</p>`
 
       pill.innerHTML = `${header}
-<p>Capacity: ${obj["actual_capacity"]}<br>
+      <p id="data${crn}">Capacity: ${obj["actual_capacity"]}<br>
 Remaining seats: ${obj["actual_remaining"]}</p>`;
 
       pill.addEventListener("mouseenter", function () {
@@ -174,24 +192,41 @@ Remaining seats: ${obj["actual_remaining"]}</p>`;
          document.getElementById(delId).style.display = "none";
       })
 
+      // Add this course pill to the DOM.
       document.getElementById("courses").appendChild(pill);
 
+      // Update input elements.
+      document.getElementById("add-course-btn").disabled = false;
+      document.getElementById("loader").style.display = "none";
+
+      // Routinely update this course's data.
+      const intervalId = setInterval(await updatePill, 10_000, crn, season, year);
+
+      // Ad-hoc strat for storing the interval ID.
+      // This allows me to halt the interval later if the course is
+      // removed by the user.
+      pill.innerHTML += `<span id="intervalId${crn}" hidden>${intervalId}</span>`;
+
+      // Set deletion listener once everything is in place.
       document.getElementById(delId).addEventListener("click", function () {
          console.log(`Removing CRN ${crn}.`);
 
+         // Remove this CRN from list of known CRNs.
          const idx = crns.indexOf(crn);
          if (idx > -1) {
             crns.splice(idx, 1);
          }
 
+         // Terminate the corresponding interval via ID.
+         const intervalId = document.getElementById(`intervalId${crn}`).innerText;
+         clearInterval(intervalId);
+
+         // Remove the pill element from the DOM.
          pill.remove();
       });
-
-      document.getElementById("add-class-btn").disabled = false;
-      document.getElementById("loader").style.display = "none";
    }
 
-   document.getElementById("add-class-btn").addEventListener("click", async function () {
+   document.getElementById("add-course-btn").addEventListener("click", async function () {
       let inputBox = document.getElementById("crn-input");
 
       const crn = inputBox.value;
