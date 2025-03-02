@@ -13,6 +13,7 @@
    }
 
    h1,
+   p,
    label {
       color: #eeeeee;
    }
@@ -108,40 +109,64 @@
    .deleteCourseIcon:hover {
       cursor: pointer;
    }
+
+   #container-left {
+      float: left;
+   }
+
+   #container-right {
+      float: right;
+   }
+
+   #courses {
+      clear: left;
+   }
 </style>
 
 <body>
    <div id="container">
-      <h1 class="floating"><code>condor-web</code></h1>
+      <div id="container-left">
+         <h1 class="floating"><code>condor-web</code></h1>
 
-      <div id="input-container" class="floating">
-         <label for="season-input">Season</label>
-         <select id="season-input" name="season">
-            <option value="winter">Winter</option>
-            <option value="fall">Fall</option>
-         </select>
+         <div id="input-container" class="floating">
+            <label for="season-input">Season</label>
+            <select id="season-input" name="season">
+               <option value="winter">Winter</option>
+               <option value="fall">Fall</option>
+            </select>
 
-         <label for="year-input">Year</label>
-         <input id="year-input" type="text" placeholder="2025" value="2025" size="4" maxlength="4" />
+            <label for="year-input">Year</label>
+            <input id="year-input" type="text" placeholder="2025" value="2025" size="4" maxlength="4" />
 
-         <br><br>
+            <br><br>
 
-         <label for="crn-input">CRN</label>
-         <input id="crn-input" type="text" placeholder="22418" size="5" maxlength="5" />
+            <label for="crn-input">CRN</label>
+            <input id="crn-input" type="text" placeholder="22418" size="5" maxlength="5" />
 
-         <br><br>
+            <br><br>
 
-         <div id="btn-loader">
-            <button id="add-course-btn">Add class</button>
-            <div id="loader"></div>
+            <div id="btn-loader">
+               <button id="add-course-btn">Add class</button>
+               <div id="loader"></div>
+            </div>
          </div>
       </div>
+
+      <div id="container-right" class="floating">
+         <label for="audio">Alarm controls</label>
+         <br><br>
+         <audio id="audio" controls loop></audio>
+      </div>
+
 
       <div id="courses"></div>
    </div>
 </body>
 
 <script type="module">
+   const response = await fetch("/api/get_alarm");
+   document.getElementById("audio").src = URL.createObjectURL(await response.blob());
+
    let crns = [];
 
    document.getElementById("year-input").setCustomValidity("Invalid year.");
@@ -157,6 +182,11 @@
       let data = document.getElementById(`data${crn}`);
       data.innerHTML = `Capacity: ${obj["actual_capacity"]}<br>
 Remaining seats: ${obj["actual_remaining"]}`;
+
+      if (obj["actual_remaining"] > 0) {
+         console.log(`Vacancy detected in CRN ${crn}! (Rem: ${obj["actual_remaining"]})`);
+         document.getElementById("audio").play();
+      }
    }
 
    async function addPill(crn, season, year) {
@@ -181,8 +211,9 @@ Remaining seats: ${obj["actual_remaining"]}`;
       let header = `<p style="text-align: left"><b>${obj["code"]}: ${obj["title"]}</b>${delIcon}</p>`
 
       pill.innerHTML = `${header}
-      <p id="data${crn}">Capacity: ${obj["actual_capacity"]}<br>
-Remaining seats: ${obj["actual_remaining"]}</p>`;
+      <p id="data${crn}">...<br>...</p>`;
+
+      updatePill(crn, season, year);
 
       pill.addEventListener("mouseenter", function () {
          document.getElementById(delId).style.display = "inline-block";

@@ -1,6 +1,7 @@
 use askama::Template;
 use axum::{extract::Query, http::status::StatusCode, response::Html, routing::get, Router};
 use condor::CourseStatus;
+use std::fs;
 use std::{collections::HashMap, fs::read_to_string};
 
 #[tokio::main]
@@ -12,6 +13,7 @@ async fn main() {
         )
         .route("/condor", get(get_course))
         .route("/api/get_course", get(get_course))
+        .route("/api/get_alarm", get(get_alarm))
         .route("/api/sneeze", get(|| async { "achoo" }))
         .route("/form", get(show_form).post(|| async { "duh" }));
 
@@ -24,6 +26,10 @@ async fn main() {
     println!("listening on http://{}", listener.local_addr().unwrap());
 
     axum::serve(listener, app).await.unwrap();
+}
+
+async fn get_alarm() -> Result<Vec<u8>, ()> {
+    Ok(fs::read("../res/alarm.mp3").unwrap())
 }
 
 async fn get_course(Query(params): Query<HashMap<String, String>>) -> Result<String, ()> {
