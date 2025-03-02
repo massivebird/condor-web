@@ -200,7 +200,7 @@ Remaining seats: ${obj["actual_remaining"]}</p>`;
       document.getElementById("loader").style.display = "none";
 
       // Routinely update this course's data.
-      const intervalId = setInterval(await updatePill, 10_000, crn, season, year);
+      const intervalId = setInterval(await updatePill, 398_216, crn, season, year);
 
       // Ad-hoc strat for storing the interval ID.
       // This allows me to halt the interval later if the course is
