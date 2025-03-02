@@ -206,6 +206,11 @@ Remaining seats: ${obj["actual_remaining"]}</p>`;
          return;
       }
 
+      if (!crn.match(/\d{5}/)) {
+         console.log("Invalid CRN. Returning.");
+         return;
+      }
+
       const season = document.getElementById("season-input").value
 
       const year = document.getElementById("year-input").value
