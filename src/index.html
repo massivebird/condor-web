@@ -122,12 +122,12 @@
          </select>
 
          <label for="year-input">Year</label>
-         <input id="year-input" type="text" placeholder="2025" value="2025" size="4" />
+         <input id="year-input" type="text" placeholder="2025" value="2025" size="4" maxlength="4" />
 
          <br><br>
 
          <label for="crn-input">CRN</label>
-         <input id="crn-input" type="text" placeholder="22418" size="5" />
+         <input id="crn-input" type="text" placeholder="22418" size="5" maxlength="5" />
 
          <br><br>
 
@@ -143,6 +143,9 @@
 
 <script type="module">
    let crns = [];
+
+   document.getElementById("year-input").setCustomValidity("Invalid year.");
+   document.getElementById("year-input").reportValidity();
 
    async function addPill(crn, season, year) {
       document.getElementById("add-class-btn").disabled = true;
